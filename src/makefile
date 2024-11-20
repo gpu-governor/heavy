@@ -1,5 +1,5 @@
 CC = clang++
-FILE = main.cpp
+FILE = heavy.cpp
 EXE = main
 RAY = -lraylib -lGL -lpthread -ldl -lrt 
 STD = -lm

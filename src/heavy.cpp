@@ -1,3 +1,8 @@
+/**
+ * @file heavy.hpp
+ * @brief This is a single header file only,  for working with game objects (sprite, x, y, animation, ...) in Raylib and c++
+ *  uncomment the example main as the end of this file to see it in action
+ */
 #include <raylib.h>
 #include <string>
 #include <vector>
@@ -5,6 +10,13 @@
 #include <iostream>
 
 //--------------------------OBJ----------------------------------------------------
+/**
+ * @class Obj
+ * @brief Represents a general object that can be rendered with static or animated textures.
+ * @brief you can use to render objects of a single sprite (e.g player.png) where the sprite is a single image and may not need to change (!animatable)
+ * @brief if also the object needs to be animated but the sprite are of different files; create an array of the files path and then pass the array variable to where you would pass the single image path as usual
+ * @brief the both above are made possible by default parameters to functions and constructor so that depending on what users want then the changed variables will be passed
+ */
 class Obj {
 public:
     int x, y;                      // Position
@@ -65,6 +77,12 @@ public:
 };
 
 //--------------------------OBJ SPRITE SHEET-----------------------------------------
+/**
+ * @class Obj_ss
+ * @brief Represents a sprite sheet object, supporting static and animated tiles.
+ * 
+ * This class handles rendering static or animated tiles from a single sprite sheet.
+ */
 class Obj_ss : public Obj {
 public:
     int tile_width;         // Tile width
@@ -110,37 +128,53 @@ public:
     }
 };
 
-//------------------------------------------MAIN-----------------------------------------
-int main() {
-    InitWindow(800, 600, "Sprite Example");
-    SetTargetFPS(60);
-
-    Obj_ss static_tile("img/Attack1.png", 300, 100, 2.0f, 126, 126); // Single tile
-    Obj_ss animated_tile("img/Attack1.png", 500, 100, 2.0f, 126, 126, 7, 0.1f); // Animated tile
-    Obj static_sprite("img/player/Idle/0.png", 100, 100, 2.0f);
-
-    std::vector<std::string> idle_frames = {
-        "img/player/Idle/0.png",
-        "img/player/Idle/1.png",
-        "img/player/Idle/2.png",
-        "img/player/Idle/3.png"
-    };
-    Obj animated_sprite(idle_frames, 300, 300, 2.0f, 0.2f);
-
-    while (!WindowShouldClose()) {
-        float delta_time = GetFrameTime();
-
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-
-        static_sprite.render();
-        static_tile.render(delta_time);
-        animated_sprite.render(delta_time);
-        animated_tile.render(delta_time);
-
-        EndDrawing();
-    }
-
-    CloseWindow();
-    return 0;
-}
+// //------------------------------------------MAIN-----------------------------------------
+// /**
+//  * @brief Main function demonstrating usage of static and animated sprite sheets.
+//  * 
+//  * Initializes a Raylib window and renders multiple objects, including:
+//  * - Static sprites
+//  * - Static tiles from a sprite sheet
+//  * - Animated tiles from a sprite sheet
+//  * - Fully animated objects
+//  * 
+//  * @return Exit status code (0 for success).
+//  */
+// int main() {
+//     InitWindow(800, 600, "Sprite Example");
+//     SetTargetFPS(60);
+// 
+// 	// using ObJ_sprite sheet: both static and animated are both the same just that static uses a constructors with default parameters
+//     Obj_ss static_tile("img/Attack1.png", 300, 100, 2.0f, 126, 126); // Single tile
+//     Obj_ss animated_tile("img/Attack1.png", 500, 100, 2.0f, 126, 126, 7, 0.1f); // Animated tile
+// 
+// 
+//     // using single obj: one as a single sprite file path. the other as an array of animated sprite
+//     Obj static_sprite("img/player/Idle/0.png", 100, 100, 2.0f);
+// 
+//     std::vector<std::string> idle_frames = {
+//         "img/player/Idle/0.png",
+//         "img/player/Idle/1.png",
+//         "img/player/Idle/2.png",
+//         "img/player/Idle/3.png"
+//     };
+//     Obj animated_sprite(idle_frames, 300, 300, 2.0f, 0.2f);
+// 
+//     while (!WindowShouldClose()) {
+//         float delta_time = GetFrameTime();
+// 
+//         BeginDrawing();
+//         ClearBackground(RAYWHITE);
+// 
+// 		// the render methods
+//         static_sprite.render();
+//         static_tile.render(delta_time);
+//         animated_sprite.render(delta_time);
+//         animated_tile.render(delta_time);
+// 
+//         EndDrawing();
+//     }
+// 
+//     CloseWindow();
+//     return 0;
+// }
