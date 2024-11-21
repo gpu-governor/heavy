@@ -8,6 +8,8 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include"color.h"
+
 
 //--------------------------OBJ----------------------------------------------------
 /**
@@ -127,22 +129,60 @@ public:
         DrawTexturePro(texture, src, dst, {0, 0}, 0.0f, WHITE);
     }
 };
+//---------------------------------------- other func -------------------------------------------
 
-// //------------------------------------------MAIN-----------------------------------------
-// /**
-//  * @brief Main function demonstrating usage of static and animated sprite sheets.
-//  * 
-//  * Initializes a Raylib window and renders multiple objects, including:
-//  * - Static sprites
-//  * - Static tiles from a sprite sheet
-//  * - Animated tiles from a sprite sheet
-//  * - Fully animated objects
-//  * 
-//  * @return Exit status code (0 for success).
-//  */
+ void init_window(int width, int height, const char* title, int target_fps){
+    InitWindow(width, height, title);
+    SetTargetFPS(target_fps);
+ }
+
+ bool window_should_close() {
+     return WindowShouldClose();
+ }
+void start_drawing(){
+	BeginDrawing();
+}
+void stop_drawing(){
+	EndDrawing();
+}
+// Set the background color
+void clear_screen(Color color) {
+    ClearBackground((Color){color.r, color.g, color.b, color.a});
+}
+
+// Draw a rectangle
+void draw_rect(int x, int y, int width, int height, Color color) {
+    Color raylib_color = (Color){color.r, color.g, color.b, color.a};
+    DrawRectangle(x, y, width, height, raylib_color);
+}
+
+// Draw a circle
+void draw_circle(int x, int y, int radius, Color color) {
+    Color raylib_color = (Color){color.r, color.g, color.b, color.a};
+    DrawCircle(x, y, radius, raylib_color);
+}
+
+// Draw text using a font (make sure to load the font before calling this)
+void draw_text(const char* text, int x, int y, Color color) {
+    Color raylib_color = (Color){color.r, color.g, color.b, color.a};
+    DrawText(text, x, y, 24, raylib_color);
+}
+//------------------------------------------MAIN-----------------------------------------
+/**
+ * @brief Main function demonstrating usage of static and animated sprite sheets.
+ * 
+ * Initializes a Raylib window and renders multiple objects, including:
+ * - Static sprites
+ * - Static tiles from a sprite sheet
+ * - Animated tiles from a sprite sheet
+ * - Fully animated objects
+ * 
+ * @return Exit status code (0 for success).
+ */
+
+
 // int main() {
-//     InitWindow(800, 600, "Sprite Example");
-//     SetTargetFPS(60);
+// 	init_window(800, 600, "Sprite Example", 60);
 // 
 // 	// using ObJ_sprite sheet: both static and animated are both the same just that static uses a constructors with default parameters
 //     Obj_ss static_tile("img/Attack1.png", 300, 100, 2.0f, 126, 126); // Single tile
@@ -160,11 +200,11 @@ public:
 //     };
 //     Obj animated_sprite(idle_frames, 300, 300, 2.0f, 0.2f);
 // 
-//     while (!WindowShouldClose()) {
+//     while (!window_should_close()) {
 //         float delta_time = GetFrameTime();
 // 
-//         BeginDrawing();
-//         ClearBackground(RAYWHITE);
+// 		start_drawing();
+//         clear_screen(COLOR_WHITE); //color included from color.h
 // 
 // 		// the render methods
 //         static_sprite.render();
@@ -172,7 +212,7 @@ public:
 //         animated_sprite.render(delta_time);
 //         animated_tile.render(delta_time);
 // 
-//         EndDrawing();
+// 		stop_drawing();
 //     }
 // 
 //     CloseWindow();
