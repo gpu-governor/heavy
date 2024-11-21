@@ -152,11 +152,19 @@ public:
     int tile_width;         // Tile width
     int tile_height;        // Tile height
     int frame_count;        // Number of animation frames
+    int row_offset;         // Starting row offset
 
+    // Original constructor (default row_offset = 0)
     Obj_ss(const std::string& path, int x_pos, int y_pos, float scale_factor, 
            int t_width, int t_height, int frames = 1, float frame_duration = 1.0f)
         : Obj(path, x_pos, y_pos, scale_factor, frame_duration),
-          tile_width(t_width), tile_height(t_height), frame_count(frames) {}
+          tile_width(t_width), tile_height(t_height), frame_count(frames), row_offset(0) {}
+
+    // Overloaded constructor with row offset parameter
+    Obj_ss(const std::string& path, int x_pos, int y_pos, float scale_factor, 
+           int t_width, int t_height, int frames, float frame_duration, int start_row)
+        : Obj(path, x_pos, y_pos, scale_factor, frame_duration),
+          tile_width(t_width), tile_height(t_height), frame_count(frames), row_offset(start_row) {}
 
     void render(float delta_time = 0.0f) {
         if (textures.empty() || tile_width <= 0 || tile_height <= 0) return;
@@ -169,8 +177,10 @@ public:
             }
         }
 
-        int tile_x = (current_frame % (textures[0].getSize().x / tile_width)) * tile_width;
-        int tile_y = (current_frame / (textures[0].getSize().x / tile_width)) * tile_height;
+        int frames_per_row = textures[0].getSize().x / tile_width;
+
+        int tile_x = (current_frame % frames_per_row) * tile_width;
+        int tile_y = ((current_frame / frames_per_row) + row_offset) * tile_height;
 
         sprite.setTextureRect(sf::IntRect(tile_x, tile_y, tile_width, tile_height));
         sprite.setPosition(x, y);
@@ -178,7 +188,6 @@ public:
         main_window.draw(sprite);
     }
 };
-
 //--------------------------MAIN-----------------------------------------------------
 
 // int main() {

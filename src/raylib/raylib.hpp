@@ -91,11 +91,21 @@ public:
     int tile_height;        // Tile height
     int frame_count;        // Number of animation frames (optional)
     float elapsed_time;     // Time accumulator for animations
+    int row_offset;         // Starting row offset
 
+    // Original constructor (default row_offset = 0)
     Obj_ss(const std::string& path, int x_pos, int y_pos, float scale_factor, 
            int t_width, int t_height, int frames = 1, float frame_duration = 1.0f)
         : Obj(path, x_pos, y_pos, scale_factor, frame_duration),
-          tile_width(t_width), tile_height(t_height), frame_count(frames), elapsed_time(0.0f) {}
+          tile_width(t_width), tile_height(t_height), frame_count(frames),
+          elapsed_time(0.0f), row_offset(0) {}
+
+    // Overloaded constructor with row offset parameter
+    Obj_ss(const std::string& path, int x_pos, int y_pos, float scale_factor, 
+           int t_width, int t_height, int frames, float frame_duration, int start_row)
+        : Obj(path, x_pos, y_pos, scale_factor, frame_duration),
+          tile_width(t_width), tile_height(t_height), frame_count(frames),
+          elapsed_time(0.0f), row_offset(start_row) {}
 
     void render(float delta_time = 0.0f) {
         if (textures.empty() || tile_width <= 0 || tile_height <= 0) return;
@@ -112,7 +122,7 @@ public:
         int frames_per_row = texture.width / tile_width;
 
         int tile_x = current_frame % frames_per_row;
-        int tile_y = current_frame / frames_per_row;
+        int tile_y = (current_frame / frames_per_row) + row_offset; // Use row_offset here
 
         Rectangle src = {
             static_cast<float>(tile_x * tile_width),
@@ -166,6 +176,10 @@ void draw_circle(int x, int y, int radius, Color color) {
 void draw_text(const char* text, int x, int y, Color color) {
     Color raylib_color = (Color){color.r, color.g, color.b, color.a};
     DrawText(text, x, y, 24, raylib_color);
+}
+
+void quit_window(){
+	CloseWindow();
 }
 //------------------------------------------MAIN-----------------------------------------
 /**
